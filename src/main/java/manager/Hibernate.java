@@ -97,14 +97,13 @@ public class Hibernate {
 
         try {
             tx = session.beginTransaction();
-            Query q = session.createQuery("select u from Bodega u");
-            List<Entrada> entraList = q.list();
+            Query q = session.createQuery("select u from Entrada u");
+
+            List<Entrada> entraList = (List<Entrada>) q.list();
+
             tipoEntradas.addAll(entraList);
-            for(Entrada n : tipoEntradas ) {
-                System.out.println(n);
-            }
+
             tx.commit();
-            System.out.println("get all OK");
          } catch (HibernateException e) {
             if(tx != null)
                 tx.rollback();

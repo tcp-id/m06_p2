@@ -8,12 +8,11 @@ import java.util.List;
 
 public class Campo {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name="id_Campo", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_campo;
 
-    @ManyToOne
-    @JoinColumn(name="id_Vid")
+    @OneToMany
+    @JoinColumn(name="id_campo")
     private List<Vid> listadeVids;
 
     @OneToOne

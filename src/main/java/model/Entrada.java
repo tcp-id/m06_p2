@@ -6,9 +6,8 @@ import javax.persistence.*;
 @Table(name="Entrada")
 public class Entrada {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Entrada", unique = true)
-    private int id_Entrada;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
 
     @Column
     private  String instruccion;
@@ -16,7 +15,7 @@ public class Entrada {
     public Entrada() {}
 
     public int getId_Entrada() {
-        return id_Entrada;}
+        return id;}
     public String getInstruccion() {
         return instruccion;}
 }

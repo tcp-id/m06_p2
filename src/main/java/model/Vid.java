@@ -3,12 +3,10 @@ package model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="vid")
-
+@Table(name="Vid")
 public class Vid {
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE)
-    @Column(name="id_Vid", unique = true, nullable = false)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id_Vid;
 
     @Column
