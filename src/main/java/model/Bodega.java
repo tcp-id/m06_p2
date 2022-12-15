@@ -19,14 +19,19 @@ public class Bodega {
 
     public Bodega() {}
 
+    public Bodega(int id_bodega, String nombre, List<Vid> vids) {
+        this.id_bodega = id_bodega;
+        this.nombre = nombre;
+        this.vids = vids;
+    }
+
     public int getId_bodega() {
         return id_bodega;
     }
 
-    public String getNombre() {
-        return nombre;
+    public List<Vid> getVids() {
+        return vids;
     }
-
 
     @Override
     public String toString() {

@@ -17,6 +17,11 @@ public class Vid {
 
     public Vid() {}
 
+    public Vid(TipoVid tipo, int cantidad) {
+        this.tipo = tipo;
+        this.cantidad = cantidad;
+    }
+
     public int getId_Vid() {return id_Vid;}
 
     public TipoVid getTipo() {return tipo;}

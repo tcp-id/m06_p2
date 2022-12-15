@@ -22,9 +22,17 @@ public class Controller {
     public void init(){
         hibernate.initSession();
 
-        ArrayList<Entrada> entrada = hibernate.getAllBodegas();
+        ArrayList<Entrada> entrada = hibernate.getAllEntradas();
+        ArrayList<Entrada> bodegas = new ArrayList<>();
+        ArrayList<Entrada> vids = new ArrayList<>();
 
         for (Entrada e : entrada){
+            if(e.getInstruccion().contains("B")){
+                bodegas.add(e);
+                hibernate.insertEntrada(e);
+            } else if (e.getInstruccion().contains("V")){
+                vids.add(e);
+            }
             System.out.println(e.getInstruccion());
         }
 

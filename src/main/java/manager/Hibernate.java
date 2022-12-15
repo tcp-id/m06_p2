@@ -1,9 +1,6 @@
 package manager;
 
-import model.Bodega;
-import model.Campo;
-import model.Entrada;
-import model.Vid;
+import model.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,6 +18,8 @@ public class Hibernate {
     public Hibernate() {
     }
 
+    // CONECT AND DISCONECT ------------------------------------------
+
     public void endSession() {
         session.close();
     }
@@ -30,13 +29,123 @@ public class Hibernate {
         session = sessionFactory.openSession();
     }
 
-    //METE UNA BODEGA
+    //RECUPERAR LOS OBJETOS DE ENTRADA Y GUARDAR EN ARRAY ------------------------------
 
-    public int insertBodega(Bodega bodega){
+    public ArrayList<Entrada> getAllEntradas(){
+        ArrayList<Entrada> tipoEntradas = new ArrayList<>();
+
+        try {
+            tx = session.beginTransaction();
+            Query q = session.createQuery("select u from Entrada u");
+
+            List<Entrada> entraList = (List<Entrada>) q.list();
+
+            tipoEntradas.addAll(entraList);
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+        return  tipoEntradas;
+    }
+
+    /* --------------------------------------------
+    ------TABLAS INTERMEDIAS-----------------------
+     BODEGA 12M-VID(LIST)
+     CAMPO 12M-VID(LIST)
+     CAMPO 121-BODEGA(ID)
+     ----------------------------------------------*/
+
+    //BODEGA 12M-VID(LIST) ---------------------------------------------------------
+
+    public void one2ManyBodegaVids(Bodega bodega) {
+        List<Vid> vids = bodega.getVids();
+        int[] cantidadVids = {};
+        TipoVid[] tiposVids = {};
+
+        try {
+            tx = session.beginTransaction();
+            for (int i = 0; i < 4; i++) {
+                Vid vid = new Vid(tiposVids[i], cantidadVids[i]);
+                session.save(vid);
+                vids.add((vid));
+            }
+            session.save(bodega);
+            tx.commit();
+            System.out.println("OK ENTRIES");
+        } catch (HibernateException e) {
+            if (tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    // CAMPO 12M-VID(LIST) ------------------------------------------
+
+    public void one2Many(Campo campo){
+
+        List<Vid> campoVids = campo.getListadeVids();
+        int[] cantidadVids = {};
+        TipoVid[] tipos = {};
+
+        try {
+            tx = session.beginTransaction();
+            for(int i = 0; i < 4; i++){
+                Vid vid = new Vid(tipos[i], cantidadVids[i]);
+                session.save(vid);
+                campoVids.add((vid));
+            }
+            session.save(campo);
+            tx.commit();
+            System.out.println("OK ENTRIES");
+        } catch (HibernateException e) {
+            if (tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    // CAMPO 121-BODEGA(ID) ------------------------------------------
+
+    public void one2oneCampoBodega(Campo campo) {
+        Bodega bodega = new Bodega();
+        campo.setBodega(bodega);
+
+        try {
+            tx = session.beginTransaction();
+            session.save(bodega);
+            session.save(campo);
+            tx.commit();
+            System.out.println("OK ENTRIES");
+        } catch (HibernateException e) {
+            if (tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //INSERTA UNA ENTRADA -----------------------------------------------
+
+    public int insertEntrada(Entrada entrada){
 
         try{
             tx =  session.beginTransaction();
-            int id = (Integer) session.save(bodega);
+            int id = (Integer) session.save(entrada);
             tx.commit();
             System.out.println("Inserted OK");
 
@@ -50,17 +159,17 @@ public class Hibernate {
         return 0;
     }
 
-    //COGE UNA BODEGA
+    //COGE UNA OBJETO ------------------------------------------------------
 
-    public Bodega getBodega(int id_bodega){
+    public Entrada getEntrada(int id){
         try {
             tx = session.beginTransaction();
-            Bodega bodega = session.get(Bodega.class, id_bodega);
-            System.out.println(bodega.toString());
+            Entrada entrada = session.get(Entrada.class, id);
+            System.out.println(entrada.toString());
             tx.commit();
             System.out.println("Saved OK!!");
 
-            return bodega;
+            return entrada;
 
         } catch (HibernateException e) {
             if(tx != null)
@@ -68,48 +177,6 @@ public class Hibernate {
             e.printStackTrace();
         }
         return  null;
-    }
-
-
-    //ASSIGNA LA BODEGA A LA MEMORIA CAMPO i SAVE
-
-    public void oneToOneBodega_Campo(Bodega bodega){
-        Campo campo = new Campo();
-        bodega.getId_bodega();
-
-        try {
-            tx = session.beginTransaction();
-            session.save(bodega);
-            session.save(campo);
-            tx.commit();;
-            System.out.println("Aded Success");
-        } catch (HibernateException e) {
-            if(tx != null)
-                tx.rollback();
-            e.printStackTrace();
-        }
-    }
-
-    //CONSEGUIR TODA LA LISTA SCRIPT
-
-    public ArrayList<Entrada> getAllBodegas(){
-        ArrayList<Entrada> tipoEntradas = new ArrayList<>();
-
-        try {
-            tx = session.beginTransaction();
-            Query q = session.createQuery("select u from Entrada u");
-
-            List<Entrada> entraList = (List<Entrada>) q.list();
-
-            tipoEntradas.addAll(entraList);
-
-            tx.commit();
-         } catch (HibernateException e) {
-            if(tx != null)
-                tx.rollback();
-            e.printStackTrace();
-        }
-        return  tipoEntradas;
     }
 
 

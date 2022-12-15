@@ -25,10 +25,18 @@ public class Campo {
         return id_campo;
     }
 
+    public List<Vid> getListadeVids() {
+        return listadeVids;
+    }
+
     public Bodega getBodega() { return bodega; }
 
     public void setId_campo(int id_campo) {
         this.id_campo = id_campo;
+    }
+
+    public void setBodega(Bodega bodega) {
+        this.bodega = bodega;
     }
 
     @Override
