@@ -37,10 +37,6 @@ public class Campo {
 
     public Bodega getBodega() { return bodega; }
 
-    public void setId_campo(int id_campo) {
-        this.id_Campo = id_campo;
-    }
-
     public void setBodega(Bodega bodega) {
         this.bodega = bodega;
     }

@@ -56,8 +56,11 @@ public class Controller {
 
 
             } else {
-
-                hibernate.one2ManyCampoVids();
+            for(Campo c : campos){
+                c.setBodega(bodega);
+                c.se
+            }
+                hibernate.one2ManyCampoVids(vid);
             }
 
         System.out.println();

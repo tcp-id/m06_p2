@@ -31,6 +31,8 @@ public class Bodega {
 
     public String getNombre() { return this.nombre; }
 
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
     public List<Vid> getlistVids() {
         return this.listVids;
     }
