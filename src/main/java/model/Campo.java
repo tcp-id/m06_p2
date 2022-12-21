@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -9,10 +10,10 @@ import java.util.List;
 public class Campo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id_campo;
+    private int id_Campo;
 
     @OneToMany
-    @JoinColumn(name="id_campo")
+    @JoinColumn(name="id_Vid")
     private List<Vid> listadeVids;
 
     @OneToOne
@@ -21,8 +22,13 @@ public class Campo {
 
     public Campo() {}
 
+    public Campo(Bodega bodega) {
+        this.listadeVids = new ArrayList<>();
+        this.bodega = bodega;
+    }
+
     public int getId_campo() {
-        return id_campo;
+        return id_Campo;
     }
 
     public List<Vid> getListadeVids() {
@@ -32,7 +38,7 @@ public class Campo {
     public Bodega getBodega() { return bodega; }
 
     public void setId_campo(int id_campo) {
-        this.id_campo = id_campo;
+        this.id_Campo = id_campo;
     }
 
     public void setBodega(Bodega bodega) {
@@ -42,7 +48,7 @@ public class Campo {
     @Override
     public String toString() {
         return "Campo{" +
-                "id_campo=" + id_campo +
+                "id_campo=" + id_Campo +
                 ", listadeVids=" + listadeVids +
                 '}';
     }

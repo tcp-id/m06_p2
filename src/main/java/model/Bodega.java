@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -8,37 +9,38 @@ import java.util.List;
 public class Bodega {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
-    private int id_bodega;
+    private int id_Bodega;
 
     @Column
     private  String nombre;
 
     @OneToMany
-    @JoinColumn(name="bodega_id")
-    private List<Vid> vids;
+    @JoinColumn(name="id_Vid")
+    private List<Vid> listVids;
 
     public Bodega() {}
 
-    public Bodega(int id_bodega, String nombre, List<Vid> vids) {
-        this.id_bodega = id_bodega;
+    public Bodega(String nombre) {
         this.nombre = nombre;
-        this.vids = vids;
+        this.listVids = new ArrayList<>();
     }
 
-    public int getId_bodega() {
-        return id_bodega;
+    public int getid_bodega() {
+        return this.id_Bodega;
     }
 
-    public List<Vid> getVids() {
-        return vids;
+    public String getNombre() { return this.nombre; }
+
+    public List<Vid> getlistVids() {
+        return this.listVids;
     }
 
     @Override
     public String toString() {
         return "Bodega{" +
-                "id=" + id_bodega +
+                "id=" + id_Bodega +
                 ", nombre='" + nombre + '\'' +
-                ", bodegas=" + vids +
+                ", bodegas=" + listVids +
                 '}';
     }
 }

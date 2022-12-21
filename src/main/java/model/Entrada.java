@@ -14,8 +14,15 @@ public class Entrada {
 
     public Entrada() {}
 
-    public int getId_Entrada() {
-        return id;}
+
     public String getInstruccion() {
         return instruccion;}
+
+    @Override
+    public String toString() {
+        return "Entrada{" +
+                "id=" + id +
+                ", instruccion='" + instruccion + '\'' +
+                '}';
+    }
 }

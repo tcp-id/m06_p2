@@ -29,7 +29,68 @@ public class Hibernate {
         session = sessionFactory.openSession();
     }
 
-    //RECUPERAR LOS OBJETOS DE ENTRADA Y GUARDAR EN ARRAY ------------------------------
+    // ------------------------------------ GETS ------------------------------------------------
+
+       public Bodega getBodega(int id) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Bodega bodega = session.get(Bodega.class, id);
+            System.out.println(bodega.toString());
+
+            tx.commit();
+            System.out.println("SAVED BODEGA!!");
+
+            return bodega;
+
+        } catch (HibernateException e) {
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+        return  null;
+    }
+    public Campo getCampo(int id) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Campo campo = session.get(Campo.class, id);
+            System.out.println(campo.toString());
+
+            tx.commit();
+            System.out.println("SAVED BODEGA!!");
+
+            return campo;
+
+        } catch (HibernateException e) {
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+        return  null;
+    }
+
+    public Vid getVid(int id) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Vid vid = session.get(Vid.class, id);
+            System.out.println(vid.toString());
+
+            tx.commit();
+            System.out.println("SAVED BODEGA!!");
+
+            return vid;
+
+        } catch (HibernateException e) {
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+        return  null;
+    }
+
+    //------- RECUPERAR LOS OBJETOS DE ENTRADA Y GUARDAR EN ARRAY ------------------------------
 
     public ArrayList<Entrada> getAllEntradas(){
         ArrayList<Entrada> tipoEntradas = new ArrayList<>();
@@ -51,30 +112,30 @@ public class Hibernate {
         return  tipoEntradas;
     }
 
-    /* --------------------------------------------
-    ------TABLAS INTERMEDIAS-----------------------
+    /* -----------------------------------------------------------------------------
+    -----------------------------------TABLAS INTERMEDIAS---------------------------
      BODEGA 12M-VID(LIST)
      CAMPO 12M-VID(LIST)
      CAMPO 121-BODEGA(ID)
-     ----------------------------------------------*/
+     -----------------------------------------------------------------------------*/
 
     //BODEGA 12M-VID(LIST) ---------------------------------------------------------
 
     public void one2ManyBodegaVids(Bodega bodega) {
-        List<Vid> vids = bodega.getVids();
+        List<Vid> vids = bodega.getlistVids();
         int[] cantidadVids = {};
         TipoVid[] tiposVids = {};
 
         try {
             tx = session.beginTransaction();
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < vids.size(); i++) {
                 Vid vid = new Vid(tiposVids[i], cantidadVids[i]);
                 session.save(vid);
                 vids.add((vid));
             }
             session.save(bodega);
             tx.commit();
-            System.out.println("OK ENTRIES");
+            System.out.println("OK VIDS EN BODEGA");
         } catch (HibernateException e) {
             if (tx != null)
                 tx.rollback();
@@ -84,7 +145,7 @@ public class Hibernate {
 
     // CAMPO 12M-VID(LIST) ------------------------------------------
 
-    public void one2Many(Campo campo){
+    public void one2ManyCampoVids(Campo campo){
 
         List<Vid> campoVids = campo.getListadeVids();
         int[] cantidadVids = {};
@@ -92,14 +153,14 @@ public class Hibernate {
 
         try {
             tx = session.beginTransaction();
-            for(int i = 0; i < 4; i++){
+            for(int i = 0; i < campoVids.size(); i++){
                 Vid vid = new Vid(tipos[i], cantidadVids[i]);
                 session.save(vid);
                 campoVids.add((vid));
             }
             session.save(campo);
             tx.commit();
-            System.out.println("OK ENTRIES");
+            System.out.println("OK VIDS EN CAMPO");
         } catch (HibernateException e) {
             if (tx != null)
                 tx.rollback();
@@ -118,7 +179,7 @@ public class Hibernate {
             session.save(bodega);
             session.save(campo);
             tx.commit();
-            System.out.println("OK ENTRIES");
+            System.out.println("CAMPO EN BODEGA");
         } catch (HibernateException e) {
             if (tx != null)
                 tx.rollback();
@@ -126,28 +187,32 @@ public class Hibernate {
         }
     }
 
+    // ------------------------------ INSERTS -----------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-    //INSERTA UNA ENTRADA -----------------------------------------------
-
-    public int insertEntrada(Entrada entrada){
+    public int insertBodega(Bodega bodega){
 
         try{
             tx =  session.beginTransaction();
-            int id = (Integer) session.save(entrada);
+            int id = (Integer) session.save(bodega);
             tx.commit();
-            System.out.println("Inserted OK");
+            System.out.println("Inserted BODEGA");
+
+            return  id;
+
+        } catch (HibernateException e){
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public int insertCampo(Campo campo){
+
+        try{
+            tx =  session.beginTransaction();
+            int id = (Integer) session.save(campo);
+            tx.commit();
+            System.out.println("Inserted CAMPO");
 
             return  id;
 
@@ -159,25 +224,25 @@ public class Hibernate {
         return 0;
     }
 
-    //COGE UNA OBJETO ------------------------------------------------------
+    public int insertVid(Vid vid){
 
-    public Entrada getEntrada(int id){
-        try {
-            tx = session.beginTransaction();
-            Entrada entrada = session.get(Entrada.class, id);
-            System.out.println(entrada.toString());
+        try{
+            tx =  session.beginTransaction();
+            int id = (Integer) session.save(vid);
             tx.commit();
-            System.out.println("Saved OK!!");
+            System.out.println("Inserted ViD");
 
-            return entrada;
+            return  id;
 
-        } catch (HibernateException e) {
+        } catch (HibernateException e){
             if(tx != null)
                 tx.rollback();
             e.printStackTrace();
         }
-        return  null;
+        return 0;
     }
+
+
 
 
 
