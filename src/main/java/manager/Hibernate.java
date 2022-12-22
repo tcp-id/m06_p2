@@ -58,7 +58,7 @@ public class Hibernate {
             System.out.println(campo.toString());
 
             tx.commit();
-            System.out.println("SAVED BODEGA!!");
+            System.out.println("SAVED CAMPO!!");
 
             return campo;
 
@@ -78,7 +78,7 @@ public class Hibernate {
             System.out.println(vid.toString());
 
             tx.commit();
-            System.out.println("SAVED BODEGA!!");
+            System.out.println("SAVED VID!!");
 
             return vid;
 
@@ -123,13 +123,13 @@ public class Hibernate {
 
     public void one2ManyBodegaVids(Bodega bodega) {
         List<Vid> vids = bodega.getlistVids();
-        int[] cantidadVids = {};
-        TipoVid[] tiposVids = {};
+        TipoVid[] tipo = {TipoVid.NEGRA, TipoVid.BLANCA};
+        int[] cant = {0,1};
 
         try {
             tx = session.beginTransaction();
-            for (int i = 0; i < vids.size(); i++) {
-                Vid vid = new Vid(tiposVids[i], cantidadVids[i]);
+            for(int i = 0; i < 2; i++) {
+                Vid vid = new Vid(tipo[i], cant[i]);
                 session.save(vid);
                 vids.add((vid));
             }
@@ -145,19 +145,16 @@ public class Hibernate {
 
     // CAMPO 12M-VID(LIST) ------------------------------------------
 
-    public void one2ManyCampoVids(Campo campo){
+    public void one2ManyCampoVids(Campo campo, TipoVid tipo, int cant){
 
         List<Vid> campoVids = campo.getListadeVids();
-        int[] cantidadVids = {};
-        TipoVid[] tipos = {};
 
         try {
             tx = session.beginTransaction();
-            for(int i = 0; i < campoVids.size(); i++){
-                Vid vid = new Vid(tipos[i], cantidadVids[i]);
+                Vid vid = new Vid(tipo, cant);
                 session.save(vid);
                 campoVids.add((vid));
-            }
+
             session.save(campo);
             tx.commit();
             System.out.println("OK VIDS EN CAMPO");
@@ -170,14 +167,14 @@ public class Hibernate {
 
     // CAMPO 121-BODEGA(ID) ------------------------------------------
 
-    public void one2oneCampoBodega(Campo campo) {
-        Bodega bodega = new Bodega();
+    public void one2oneCampoBodega(Bodega bodega) {
+        Campo campo = new Campo();
         campo.setBodega(bodega);
 
         try {
             tx = session.beginTransaction();
-            session.save(bodega);
             session.save(campo);
+            session.save(bodega);
             tx.commit();
             System.out.println("CAMPO EN BODEGA");
         } catch (HibernateException e) {
@@ -196,41 +193,6 @@ public class Hibernate {
             int id = (Integer) session.save(bodega);
             tx.commit();
             System.out.println("Inserted BODEGA");
-
-            return  id;
-
-        } catch (HibernateException e){
-            if(tx != null)
-                tx.rollback();
-            e.printStackTrace();
-        }
-        return 0;
-    }
-    public int insertCampo(Campo campo){
-
-        try{
-            tx =  session.beginTransaction();
-            int id = (Integer) session.save(campo);
-            tx.commit();
-            System.out.println("Inserted CAMPO");
-
-            return  id;
-
-        } catch (HibernateException e){
-            if(tx != null)
-                tx.rollback();
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public int insertVid(Vid vid){
-
-        try{
-            tx =  session.beginTransaction();
-            int id = (Integer) session.save(vid);
-            tx.commit();
-            System.out.println("Inserted ViD");
 
             return  id;
 

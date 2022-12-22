@@ -14,9 +14,7 @@ public class Entrada {
 
     public Entrada() {}
 
-
-    public String getInstruccion() {
-        return instruccion;}
+    public String getInstruccion() { return instruccion; }
 
     @Override
     public String toString() {

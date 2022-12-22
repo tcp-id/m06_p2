@@ -27,21 +27,17 @@ public class Campo {
         this.bodega = bodega;
     }
 
-    public int getId_campo() {
-        return id_Campo;
-    }
-
-    public List<Vid> getListadeVids() {
-        return listadeVids;
-    }
-
-    public Bodega getBodega() { return bodega; }
+    public int getId_Campo() { return id_Campo; }
 
     public void setBodega(Bodega bodega) {
         this.bodega = bodega;
     }
 
-    @Override
+    public Bodega getBodega() { return bodega; }
+
+    public List<Vid> getListadeVids() { return listadeVids; }
+
+        @Override
     public String toString() {
         return "Campo{" +
                 "id_campo=" + id_Campo +

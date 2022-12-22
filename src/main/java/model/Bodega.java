@@ -25,13 +25,7 @@ public class Bodega {
         this.listVids = new ArrayList<>();
     }
 
-    public int getid_bodega() {
-        return this.id_Bodega;
-    }
-
-    public String getNombre() { return this.nombre; }
-
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public int getId_Bodega() { return id_Bodega; }
 
     public List<Vid> getlistVids() {
         return this.listVids;
